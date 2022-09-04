@@ -1,0 +1,36 @@
+
+.white-rook{
+  background-size: contain;
+  background-image: url(/chess-pieces/white-rook.png);
+  background-repeat: no-repeat;
+}
+
+.white-horse{
+  background-size: contain;
+  background-image: url(/chess-pieces/white-horse.png);
+  background-repeat: no-repeat;
+}
+
+.white-bishop{
+  background-size: contain;
+  background-image: url(/chess-pieces/white-bishop.png);
+  background-repeat: no-repeat;
+}
+
+.white-pawn{
+  background-size: contain;
+  background-image: url(/chess-pieces/white-pawn.png);
+  background-repeat: no-repeat;
+}
+
+.white-king{
+  background-size: contain;
+  background-image: url(/chess-pieces/white-king.png);
+  background-repeat: no-repeat;
+}
+
+.white-queen{
+  background-size: contain;
+  background-image: url(/chess-pieces/white-queen.png);
+  background-repeat: no-repeat;
+}
