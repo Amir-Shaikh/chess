@@ -6,22 +6,24 @@ body{
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 10%;
 }
 
 #chessboard{
-  border: 1px solid black;
+  border: 10px solid rgb(88, 64, 36);
+  border-radius: 10px;
   border-spacing: 1px !important;
   background-color: rgb(255, 178, 85);
 }
 
 #chessboard tr td{
-  width: 80px;
-  height: 80px;
-  border: 1px solid rgb(46, 32, 16);
+  width: 60px;
+  height: 60px;
+  border: 1px solid rgb(88, 64, 36);
 }
 
 .black{
-  background-color: rgb(46, 32, 16);
+  background-color: rgb(88, 64, 36);
 }
 
 .white{
@@ -29,5 +31,5 @@ body{
 }
 
 .block-selected{
-  box-shadow: inset 0px 0px 400px 110px rgba(255, 54, 54, 0.199);
+  box-shadow: inset 0px 0px 400px 110px rgba(255, 54, 54, 0.342);
 }

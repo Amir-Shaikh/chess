@@ -1,36 +1,36 @@
 
 .black-rook{
   background-size: contain;
-  background-image: url(/chess-pieces/black-rook.png);
+  background-image: url(../chess-pieces/black-rook.png);
   background-repeat: no-repeat;
 }
 
 .black-horse{
   background-size: contain;
-  background-image: url(/chess-pieces/black-horse.png);
+  background-image: url(../chess-pieces/black-horse.png);
   background-repeat: no-repeat;
 }
 
 .black-bishop{
   background-size: contain;
-  background-image: url(/chess-pieces/black-bishop.png);
+  background-image: url(../chess-pieces/black-bishop.png);
   background-repeat: no-repeat;
 }
 
 .black-pawn{
   background-size: contain;
-  background-image: url(/chess-pieces/black-pawn.png);
+  background-image: url(../chess-pieces/black-pawn.png);
   background-repeat: no-repeat;
 }
 
 .black-king{
   background-size: contain;
-  background-image: url(/chess-pieces/black-king.png);
+  background-image: url(../chess-pieces/black-king.png);
   background-repeat: no-repeat;
 }
 
 .black-queen{
   background-size: contain;
-  background-image: url(/chess-pieces/black-queen.png);
+  background-image: url(../chess-pieces/black-queen.png);
   background-repeat: no-repeat;
 }
