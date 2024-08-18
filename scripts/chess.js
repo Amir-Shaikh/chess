@@ -22,11 +22,6 @@ function BlockSelected() {
   AddToSelection(this.SelectedBlock);
 
   StepsOf(this.SelectedBlock);
-
-  // console.clear();
-  // console.log(this.SelectedBlock);
-  // console.log(this.NextMoves);
-
 }
 
 function ClearSelection() {
