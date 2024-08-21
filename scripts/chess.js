@@ -2,162 +2,145 @@
 Init();
 AllignPieces();
 
-var NextMoves = [];
-var SelectedBlock = undefined;
+var NextPos = [];
+var Selectedpiece = undefined;
 
-function BlockSelected() {
-
-  ClearSelection();
-
+function PieceSelected() {
   var dataId = this.getAttribute('data-id');
-  var piece = this.getAttribute('data-piece');
-  var team = this.getAttribute('data-team');
-  var blockColor = this.className.split(" ")[0];
-  
-  if (piece == '' || piece == null || piece == undefined) return;
-
-  this.SelectedBlock = { dataId, piece, blockColor, team };
-  HighlightSelectedBlock(this);
-  
-  AddToSelection(this.SelectedBlock);
-
-  StepsOf(this.SelectedBlock);
+  if (this.Selectedpiece != null){
+    if (this.NextPos.includes(dataId)){
+      ToggleHighlight(this);
+    }
+  }
+  else{
+    
+    this.Selectedpiece = GetBlockData(dataId);
+    
+    if (this.Selectedpiece == undefined || this.Selectedpiece == null) return;
+    
+    ToggleHighlight(this);
+    this.NextPos = GetNextPos(this.Selectedpiece);
+  }
 }
 
 function ClearSelection() {
   var cells = document.querySelectorAll("td");
-
   for (var cell of cells) {
     cell.classList.remove("block-selected");
+    cell.classList.remove("block-selected-green");
   }
-  
 }
 
-function HighlightSelectedBlock(block) {
-  block.classList.add("block-selected");
+function ToggleHighlight(block) {
+  block.classList.toggle("block-selected");
 }
 
-function GetLastStoredIem(){
-  var existingitems = JSON.parse(sessionStorage.getItem("SelectedItem"));
-  if(existingitems == null) return null;
-  return existingitems;
+
+function ToggleHighlightNextMove(block) {
+  block.classList.toggle("block-selected-green");
 }
 
-function AddToSelection(item){
-  sessionStorage.setItem("SelectedItem", JSON.stringify(item));
-}
-
-function StepsOf(block){
+function GetNextPos(block){
+    let nextPos = [];
     switch (block.piece) {
       case "white-pawn":
       case "black-pawn":
-        MovePawn(block);
+        nextPos = MovePawn(block);
         break;
     
       default:
         break;
     }
+
+  return nextpos;
 }
 
 function MovePawn(block) {
-  let row = Getpostion(block.dataId, 0);
-  let col = Getpostion(block.dataId, 1);
+  let pos = Getpostion(block.dataId);
 
-  let next = [];
-  let step1, step2, step3;
+  let nextPos = [];
+  let counterPos = [];
 
   if(block.team == "white"){
-    step1 = Up(row) + '-' + col;
-    step2 = Up(row) + '-' + Left(col);
-    step3 = Up(row) + '-' + Right(col); 
+
+    nextPos.push((pos.row - 1)+'-'+pos.col);
+    if(pos.row == 6){
+      nextPos.push((pos.row - 2)+'-'+pos.col);
+    }
+    if(pos.row > 0 && pos.col < 7){
+      let moveToRightPos = (pos.row - 1)+'-'+(pos.col + 1);
+      counterPos.push(moveToRightPos);
+    }
+
+    if(pos.row > 0 && pos.col > 0){
+      let moveToLeftPos = (pos.row - 1)+'-'+(pos.col - 1);
+      counterPos.push(moveToLeftPos);
+    }
+
   }
   else {
-    step1 = Down(row) + '-' + col;
-    step2 = Down(row) + '-' + Left(col);
-    step3 = Down(row) + '-' + Right(col);
+    nextPos.push((pos.row + 1)+'-'+pos.col);
+    if(pos.row == 1){
+      nextPos.push((pos.row + 2)+'-'+pos.col);
+    }
+
+    if(pos.row < 7 && pos.col < 7){
+      let moveToRightPos = (pos.row + 1)+'-'+(pos.col + 1);
+      counterPos.push(moveToRightPos);
+    }
+
+    if(pos.row < 7 && pos.col > 0){
+      let moveToLeftPos = (pos.row + 1)+'-'+(pos.col - 1);
+      counterPos.push(moveToLeftPos);
+    }
   }
 
-  next = [ step1, step2, step3 ];
-
-  this.NextMoves = [];
-  next.forEach(dataid => {
-    if(IsValid(dataid)){
-      let el = document.getElementById(dataid);
-      let piece = el.getAttribute('data-piece');
-      let team = el.getAttribute('data-team');
-
-      if ((piece != '' || piece != null || piece != undefined) && (team != block.team)){
-       this.NextMoves.push(dataid);
-      }
+  invalidNextPos = [];
+  nextPos.forEach(pos => {
+    let nextblock = GetBlockData(pos);
+    if (nextblock != undefined && nextblock != null){
+      invalidNextPos.push(pos);
     }
   });
 
-  console.log(this.NextMoves);
-}
+  invalidNextPos.forEach(pos => { nextPos.pop(pos) });
 
-function Getpostion(string, position) {
-  let values = string.split("-");
-  return parseInt(values[position]);
-}
 
-function IsValid(value)
-{
-  let validCount = 0;
+  invalidCounterPos = [];
+  counterPos.forEach(pos => {
+    let counterPos = GetBlockData(pos);
+    if ((counterPos == undefined || counterPos == null) || block?.team == counterPos?.team){
+      invalidCounterPos.push(pos);
+    }
+  });
 
-  let row = Getpostion(value, 0);
-  let col = Getpostion(value, 1);
-
-  if(row >= 0 && row <= 7 ){
-    validCount++;
-  }
-
-  if(col >= 0 && col <= 7 ){
-    validCount++;
-  }
-
-  return (validCount == 2 ? true : false);
-}
-
-function Up(num) {
-  return num - 1;
-}
-
-function Down(num) {
-  return num + 1;
-}
-
-function Left(num) {
-  return num - 1;
-}
-
-function Right(num) {
-  return num + 1;
-}
-
-function getValue(val) {
-  let value = val.split("-");
-  let row = parseInt(value[0]);
-  let col = parseInt(value[1]);
-
-  let middle = matrix[row][col];
-
-  let right = matrix[row][Right(col)];
-  let left = matrix[row][Left(col)];
-  let top = matrix[Up(row)][col];
-  let bottom = matrix[Down(row)][col];
+  invalidCounterPos.forEach(pos => { counterPos.pop(pos) });
   
-  let topright = matrix[Up(row)][Right(col)];
-  let topleft = matrix[Up(row)][Left(col)];
-  let bottomleft = matrix[Down(row)][Left(col)];
-  let bottomright = matrix[Down(row)][Right(col)];
+  counterPos.forEach(pos => { nextPos.push(pos) });
 
-  console.log("middle       : " + middle);
-  console.log("right        : " + right);
-  console.log("left         : " + left);
-  console.log("top          : " + top);
-  console.log("bottom       : " + bottom);
-  console.log("topright     : " + topright);
-  console.log("topleft      : " + topleft);
-  console.log("bottomright  : " + bottomright);
-  console.log("bottomleft   : " + bottomleft);
+  //console.log(nextPos);
+  nextPos.forEach(pos => {
+    let block = document.getElementById(pos);
+    ToggleHighlightNextMove(block);
+  });
+
 }
+
+function Getpostion(string) {
+  let values = string.split("-");
+  return { row: parseInt(values[0]), col: parseInt(values[1]) };
+}
+
+function GetBlockData(id){
+  let block = document.getElementById(id);
+
+  var dataId = block.getAttribute('data-id');
+  var piece = block.getAttribute('data-piece');
+  var team = block.getAttribute('data-team');
+  var blockColor = block.getAttribute('data-blockcolor');
+  
+  if (piece == '' || piece == null || piece == undefined) return null;
+
+  return { dataId, piece, blockColor, team };
+}
+

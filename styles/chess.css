@@ -11,7 +11,7 @@ body{
 
 #chessboard{
   border: 10px solid rgb(88, 64, 36);
-  border-radius: 10px;
+  border-radius: 5px;
   border-spacing: 1px !important;
   background-color: rgb(255, 178, 85);
 }
@@ -32,4 +32,8 @@ body{
 
 .block-selected{
   box-shadow: inset 0px 0px 400px 110px rgba(255, 54, 54, 0.342);
+}
+
+.block-selected-green{
+  box-shadow: inset 0px 0px 400px 110px rgba(54, 255, 144, 0.342);
 }

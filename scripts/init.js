@@ -50,7 +50,7 @@ function Init(){
   var cells = document.querySelectorAll("td");
 
   for (var cell of cells) {
-    cell.addEventListener('click', BlockSelected);
+    cell.addEventListener('click', PieceSelected);
   }
   
 }
